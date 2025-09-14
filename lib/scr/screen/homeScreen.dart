@@ -15,8 +15,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final productModelScreen =Provider.of<productProvider>(context);
-    final _items=productModelScreen.items;
+    final productModelScreen = Provider.of<productProvider>(context);
+    final _items = productModelScreen.items;
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text("Profile", style: TextStyle(fontSize: 22))),
@@ -242,13 +242,11 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.yellow,
             ),
 
-
-            // code 
+            // code
             Container(
               height: 150,
               width: MediaQuery.of(context).size.width,
               color: Colors.cyanAccent,
-              child: Text(),
             ),
             Container(
               height: 150,
