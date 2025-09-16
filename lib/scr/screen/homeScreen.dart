@@ -10,13 +10,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool isbool = false;
   int selectedIndex = 0;
   final List<String> tabs = ["Transaction", "Listings", "Sold"];
 
   @override
   Widget build(BuildContext context) {
-    final productModelScreen = Provider.of<productProvider>(context);
-    final _items = productModelScreen.items;
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text("Profile", style: TextStyle(fontSize: 22))),
@@ -236,33 +235,189 @@ class _HomeScreenState extends State<HomeScreen> {
                 }),
               ),
             ),
-            Container(
-              height: 150,
+            SizedBox(height: 5),
+            SizedBox(
+              height: 350,
               width: MediaQuery.of(context).size.width,
-              color: Colors.yellow,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Transactions",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: EdgeInsets.all(10),
+                        child: Icon(Icons.dashboard_outlined),
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: Consumer<productProvider>(
+                      builder: (context, productModelScreen, child) {
+                        final items = productModelScreen.productItem;
+                        if (items.isEmpty) {
+                          return Center(child: Text("No items found"));
+                        }
+
+                        return ListView.builder(
+                          scrollDirection: Axis.horizontal, // Horizontal scroll
+                          itemCount: items.length,
+                          itemBuilder: (context, index) {
+                            final item = items[index];
+
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: const BorderRadius.vertical(
+                                      top: Radius.circular(16),
+                                    ),
+                                    child: Image.network(
+                                      item.image,
+                                      height: 280,
+                                      width: 200, // width ঠিক করে দিতে হবে
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 10,
+                                    right: 10,
+                                    child: Container(
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                      ),
+                                      padding: const EdgeInsets.all(6),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            isbool = !isbool;
+                                          });
+                                        },
+                                        icon: Icon(
+                                          isbool
+                                              ? Icons.favorite
+                                              : Icons.favorite_border,
+                                        ),
+                                        color: isbool ? Colors.red : Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
 
+            /*SizedBox(
+              height: 350,
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "2 Trasnaction",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: EdgeInsets.all(10),
+                        child: Icon(Icons.dashboard_outlined),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    child: Consumer<productProvider>(
+                      builder: (context, productModelScreen, child) {
+                        final items = productModelScreen.productItem;
+                        if (items.isEmpty) {
+                          return Center(child: Text("No items found"));
+                        }
+
+                        final item = items[0]; // উদাহরণ, প্রথম item দেখাচ্ছি
+
+                        return Stack(
+                          children: [
+                            ClipRRect(
+                              borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(16),
+                              ),
+                              child: Image.network(
+                                item.image, // provider থেকে নেওয়া
+                                height: 280,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+
+                            /// Heart Icon
+                            Positioned(
+                              top: 10,
+                              right: 10,
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                padding: const EdgeInsets.all(6),
+                                child: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      isbool = !isbool;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    isbool
+                                        ? Icons.favorite
+                                        : Icons.favorite_border,
+                                  ),
+                                  color: isbool ? Colors.red : Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+
+
+                ],
+              ),
+            ),*/
+
             // code
-            Container(
-              height: 150,
-              width: MediaQuery.of(context).size.width,
-              color: Colors.cyanAccent,
-            ),
-            Container(
-              height: 150,
-              width: MediaQuery.of(context).size.width,
-              color: Colors.blue,
-            ),
-            Container(
-              height: 150,
-              width: MediaQuery.of(context).size.width,
-              color: Colors.green,
-            ),
-            Container(
-              height: 150,
-              width: MediaQuery.of(context).size.width,
-              color: Colors.red,
-            ),
           ],
         ),
       ),
